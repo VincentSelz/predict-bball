@@ -8,7 +8,6 @@ from urllib.request import urlopen
 import pandas as pd
 from bs4 import BeautifulSoup
 
-# import requests
 
 # NBA season that are analyzed
 years = [2010, 2011, 2013, 2014, 2015, 2016, 2017, 2018, 2019]
@@ -41,8 +40,6 @@ def schedule_scraper(years):
                     f"https://www.basketball-reference.com/"
                     "leagues/NBA_{year}_games-{month}.html"
                 )
-                # Is the URL accessible?
-                # response = requests.get(url)
                 # this is the HTML from the given URL
                 html = urlopen(url)
                 soup = BeautifulSoup(html)
@@ -50,7 +47,8 @@ def schedule_scraper(years):
                 if err.code == 404:
                     continue
                 else:
-                    raise HTTPError  # TODO: FInd better Error + Message
+                    raise HTTPError("Request was not successful.")
+
             # use findALL() to get the column headers
             soup.findAll("tr", limit=2)
 
