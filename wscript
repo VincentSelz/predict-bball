@@ -12,8 +12,8 @@ def set_project_paths(ctx):
 
     pp = OrderedDict()
     pp["PROJECT_ROOT"] = "."
-    pp["GET_DATA"] = "webscraper"
-    pp["DATA"] = "DATA"
+    pp["GET_DATA"] = "src/webscraper"
+    pp["DATA"] = "src/data"
     pp["IN_MODEL_CODE"] = "src/model_code"
     pp["IN_MODEL_SPECS"] = "src/model_specs"
     pp["LIBRARY"] = "src/library"
@@ -79,4 +79,4 @@ def build(ctx):
     # Generate header file(s) with project paths in "bld" directory
     ctx(features="write_project_paths", target="project_paths.py")
     ctx.add_group()
-    ctx.recurse("webscraper")
+    ctx.recurse("src“)
