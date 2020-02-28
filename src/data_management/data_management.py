@@ -6,6 +6,8 @@ import pandas as pd
 
 list_of_years = list(range(2009, 2019))
 
+
+Seasons = []
 for year in list_of_years:
     dc = pd.read_excel(f"../data/Boxscores{year}.xlsx")
 
@@ -150,7 +152,8 @@ for year in list_of_years:
         # Putting it into form to get it back into the original Dataframe
         Home[team] = Season[team][Season[team]["Home Team"].str.match(f"{team}")]
         Away[team] = Season[team][Season[team]["Away Team"].str.match(f"{team}")]
-        # Home[team].drop(columns=["Away Team","Home Team"],inplace=True)
+
+        # Reduces complexity and makes later join with other Dataframe easier.
         Away[team].drop(
             columns=[
                 "Away Team",
@@ -163,7 +166,7 @@ for year in list_of_years:
             ],
             inplace=True,
         )
-        # Rename Indicators
+        # Rename Indicators into general names
         Home[team].rename(
             columns={
                 f"{team} PTS Average": "Home PTS Average",
@@ -183,15 +186,22 @@ for year in list_of_years:
             inplace=True,
         )
 
-        # TODO
-        # seas = dc.merge(Home[team],how='left',left_index=True, right_index=True)
-        # seas = dc.merge(Away[team],how='left', left_index=True, right_index=True)
+        # Append Data to list
         Home_All.append(Home[team])
         Away_All.append(Away[team])
-    # season_data = pd.concat([season_data, Home[team]], sort=False)
-    # season_data = pd.concat([season_data, Away[team]], sort=False)
+    # List to Dataframe
     Home_All = pd.concat(Home_All)
     Away_All = pd.concat(Away_All)
+
+    # Join the two lists together
     Season_data = Home_All.join(Away_All)
     Season_data.sort_index(inplace=True)
+
+    # Export data per year as Excel file
     Season_data.to_excel(f"Season{year}_data.xlsx")
+    # Get list of all season together
+    Seasons.append(Season_data)
+
+# List to Dataframe
+Seasons = pd.concat(Seasons)
+Seasons.to_excel("Seasons.xlsx")
