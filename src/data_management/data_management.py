@@ -4,12 +4,13 @@ a way to attain one Dataframe with all games.
 import pandas as pd
 
 
-list_of_years = list(range(2009, 2019))
+list_of_years = [2009, 2010]
 
 
 Seasons = []
 for year in list_of_years:
-    dc = pd.read_excel(f"../data/Boxscores{year}.xlsx")
+    # dc = pd.read_excel(f"../data/Boxscores{year}.xlsx")
+    dc = pd.read_excel(f"Boxscores{year}.xlsx")
 
     # List of new columns names
     list = [
@@ -27,19 +28,18 @@ for year in list_of_years:
     ]
     dc.columns = list
 
-    # Drop Columns
+    # Drop Columns (some Colunms were unspecified)
     dc.drop(["A", "B", "C", "D", "E", "F"], axis=1, inplace=True)
 
     # Identifies Playoffs start and drops rows after that
-    row = dc[dc["Date"] == "Playoffs"].index.tolist()[0]
+    row = dc[dc.Date == "Playoffs"].index.tolist()[0]
     dc = dc.iloc[:row]
 
-    # Get win/loss amount of home team
+    # Calculate Win Difference
     dc["Win Difference"] = dc["PTS Home"].subtract(dc["PTS Away"])
 
     # Win Indicator
     dc["Home Win"] = dc["Win Difference"].apply(lambda x: 1 if x >= 0 else 0)
-    dc["Away Win"] = dc["Win Difference"].apply(lambda x: 1 if x <= 0 else 0)
 
     # Change Team Names
     dc.replace(
@@ -76,6 +76,7 @@ for year in list_of_years:
             "Atlanta Hawks": "ATL",
             "New Orleans Hornets": "NOH",
             "Charlotte Bobcats": "CHB",
+            "New Jersey Nets": "NJN",
         },
         inplace=True,
     )
@@ -83,7 +84,7 @@ for year in list_of_years:
     # Set index to 1
     dc.index = dc.index + 1
     dc.index.name = "gameid"
-    season_data = dc
+
     # List of teams
     teams = dc["Home Team"].unique().tolist()
 
@@ -96,18 +97,19 @@ for year in list_of_years:
     for team in teams:
         Home[team] = dc[dc["Home Team"].str.match(f"{team}")]
         Away[team] = dc[dc["Away Team"].str.match(f"{team}")]
-        Home[team][f"{team} Home"] = 1
-        Away[team][f"{team} Home"] = 0
 
-        # Get Wins
+        # Get Wins #Copy Warning
         Home[team][f"{team} Win"] = Home[team]["Home Win"]
-        Away[team][f"{team} Win"] = Away[team]["Away Win"]
+        Away[team][f"{team} Win"] = Away[team]["Home Win"].apply(
+            lambda x: 1 if x == 0 else 0
+        )
         Home[team][f"{team} Loss"] = Home[team]["Home Win"].apply(
             lambda x: 1 if x == 0 else 0
         )
-        Away[team][f"{team} Loss"] = Away[team]["Away Win"].apply(
-            lambda x: 1 if x == 0 else 0
+        Away[team][f"{team} Loss"] = Away[team]["Home Win"].apply(
+            lambda x: 1 if x == 1 else 0
         )
+        # Get points #Copy Warning
         Home[team][f"{team} PTS"] = Home[team]["PTS Home"]
         Away[team][f"{team} PTS"] = Away[team]["PTS Away"]
         Home[team][f"OPP PTS"] = Home[team]["PTS Away"]
@@ -116,18 +118,22 @@ for year in list_of_years:
         # Concat the Dataframes
         Season[team] = pd.concat([Home[team], Away[team]])
 
-        # Sort by index /very important since we predict on past games
+        # Sort by index (very important since we predict on past games)
         Season[team].sort_index(inplace=True)
 
-        # set gameid as index and put games as column
+        # Set gameid as index and put games as column
         games = [*range(1, len(Season[team]) + 1)]
         Season[team]["games"] = games
         Season[team].reset_index(inplace=True)
         Season[team].set_index(["gameid"], inplace=True)
 
-        # Cumulative Wins/Losses + Average Points
+        # Cumulative Wins/Losses & Win Percentage
         Season[team]["Wins"] = Season[team][f"{team} Win"].cumsum().shift(+1)
         Season[team]["Losses"] = Season[team][f"{team} Loss"].cumsum().shift(+1)
+        Season[team]["Win Percentage"] = Season[team]["Wins"].divide(
+            Season[team]["games"]
+        )
+        # Average Points
         Season[team][f"{team} PTS Average"] = (
             Season[team][f"{team} PTS"].cumsum().divide(Season[team]["games"]).shift(+1)
         )
@@ -137,15 +143,7 @@ for year in list_of_years:
 
         # Clean the Dataframe
         Season[team].drop(
-            columns=[
-                "Away Win",
-                f"{team} Home",
-                f"{team} Win",
-                f"{team} Loss",
-                f"{team} PTS",
-                "OPP PTS",
-                "games",
-            ],
+            columns=[f"{team} Win", f"{team} Loss", f"{team} PTS", "OPP PTS", "games"],
             inplace=True,
         )
 
@@ -173,6 +171,7 @@ for year in list_of_years:
                 "OPP PTS Average": "Home OPP PTS Average",
                 "Wins": "Home Wins",
                 "Losses": "Home Losses",
+                "Win Percentage": "Home Win Percentage",
             },
             inplace=True,
         )
@@ -182,6 +181,7 @@ for year in list_of_years:
                 "OPP PTS Average": "Away OPP PTS Average",
                 "Wins": "Away Wins",
                 "Losses": "Away Losses",
+                "Win Percentage": "Away Win Percentage",
             },
             inplace=True,
         )
@@ -199,6 +199,7 @@ for year in list_of_years:
 
     # Export data per year as Excel file
     Season_data.to_excel(f"Season{year}_data.xlsx")
+
     # Get list of all season together
     Seasons.append(Season_data)
 
