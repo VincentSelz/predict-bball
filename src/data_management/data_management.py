@@ -3,14 +3,12 @@ a way to attain one Dataframe with all games.
 """
 import pandas as pd
 
-
-list_of_years = [2009, 2010]
-
+list_of_years = [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018]
 
 Seasons = []
 for year in list_of_years:
-    # dc = pd.read_excel(f"../data/Boxscores{year}.xlsx")
-    dc = pd.read_excel(f"Boxscores{year}.xlsx")
+    dc = pd.read_excel(f"../data/Boxscores{year}.xlsx", parse_dates=True)
+    # dc = pd.read_excel(f"Boxscores{year}.xlsx",parse_dates=True)
 
     # List of new columns names
     list = [
@@ -122,28 +120,32 @@ for year in list_of_years:
         Season[team].sort_index(inplace=True)
 
         # Set gameid as index and put games as column
-        games = [*range(1, len(Season[team]) + 1)]
-        Season[team]["games"] = games
-        Season[team].reset_index(inplace=True)
-        Season[team].set_index(["gameid"], inplace=True)
+        # games = [*range(1, len(Season[team]) + 1)]
+        Season[team]["Games"] = [*range(1, len(Season[team]) + 1)]
 
         # Cumulative Wins/Losses & Win Percentage
         Season[team]["Wins"] = Season[team][f"{team} Win"].cumsum().shift(+1)
         Season[team]["Losses"] = Season[team][f"{team} Loss"].cumsum().shift(+1)
         Season[team]["Win Percentage"] = Season[team]["Wins"].divide(
-            Season[team]["games"]
+            Season[team]["Games"]
         )
-        # Average Points
+        # Average Points & Point Differential
         Season[team][f"{team} PTS Average"] = (
-            Season[team][f"{team} PTS"].cumsum().divide(Season[team]["games"]).shift(+1)
+            Season[team][f"{team} PTS"].cumsum().divide(Season[team]["Games"]).shift(+1)
         )
         Season[team]["OPP PTS Average"] = (
-            Season[team]["OPP PTS"].cumsum().divide(Season[team]["games"]).shift(+1)
+            Season[team]["OPP PTS"].cumsum().divide(Season[team]["Games"]).shift(+1)
         )
+        Season[team]["Point Differential"] = Season[team][
+            f"{team} PTS Average"
+        ].subtract(Season[team]["OPP PTS Average"])
+
+        # Days off
+        # Season[team]["Days Off"] = Season[team]["Date"].apply(Daysoff(x))
 
         # Clean the Dataframe
         Season[team].drop(
-            columns=[f"{team} Win", f"{team} Loss", f"{team} PTS", "OPP PTS", "games"],
+            columns=[f"{team} Win", f"{team} Loss", f"{team} PTS", "OPP PTS"],
             inplace=True,
         )
 
@@ -172,6 +174,8 @@ for year in list_of_years:
                 "Wins": "Home Wins",
                 "Losses": "Home Losses",
                 "Win Percentage": "Home Win Percentage",
+                "Games": "Games No Home Team",
+                "Point Differential": "Home Point Differential",
             },
             inplace=True,
         )
@@ -182,6 +186,8 @@ for year in list_of_years:
                 "Wins": "Away Wins",
                 "Losses": "Away Losses",
                 "Win Percentage": "Away Win Percentage",
+                "Games": "Games No Away Team",
+                "Point Differential": "Away Point Differential",
             },
             inplace=True,
         )
