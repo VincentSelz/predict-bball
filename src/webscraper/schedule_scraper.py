@@ -7,10 +7,9 @@ import pandas as pd
 from helper_functions import fetch_games
 from helper_functions import get_URLs
 
-# from bld.project_paths import project_paths_join as ppj
 
 # NBA season that are analyzed
-years = list(range(2017, 2019))
+years = list(range(2010, 2020))
 
 
 def schedule_scraper(years):
@@ -26,7 +25,10 @@ def schedule_scraper(years):
         urls = get_URLs(year)
         box_scores[year] = []
         for url in urls:
-            month = fetch_games(url)
+            try:  # CLean this mess up ASAP
+                month = fetch_games(url)
+            except Exception:
+                continue
             box_scores[year].append(month)
             # As specified in the robots.txt of the website.
             time.sleep(3)
@@ -35,7 +37,8 @@ def schedule_scraper(years):
         # Export it as Excel file with Waf
         # box_scores[year].to_excel(ppj("OUT_DATA","Boxscores" + str(year) + ".xlsx"),sep="/")
         # Export it without waf
-    return box_scores[year].to_excel("../data/Boxscores" + str(year) + ".xlsx")
+        box_scores[year].to_csv("../data/Boxscores" + str(year) + ".csv")
+    return print("Exported all Boxscores successfully!")
 
 
 schedule_scraper(years)
