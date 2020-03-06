@@ -6,14 +6,16 @@ from urllib.request import urlopen
 import pandas as pd
 from bs4 import BeautifulSoup
 
-# from bld.project_paths import project_paths_join as ppj
-
 
 def get_URLs(year):
-    """get the working URLs for the website and store them in a list.
+    """Stores URLs.
 
-    Args: year
+    Arg: year
 
+    Functionality: Stores the working URL for a prespecified year in a list.
+
+    Notes: Month include all months were the NBA is playing but there are instances,
+    were the season begins later, thus the necessity to check the URLs.
     """
     months = [
         "october",
@@ -29,12 +31,12 @@ def get_URLs(year):
 
     urls = []
     for month in months:
+        url = (
+            f"https://www.basketball-reference.com/"
+            "leagues/NBA_{}_games-{}.html".format(year, month)
+        )
         try:
-            url = (
-                f"https://www.basketball-reference.com/"
-                "leagues/NBA_{}_games-{}.html".format(year, month)
-            )
-
+            urlopen(url)
             urls.append(url)
         except HTTPError as err:
             if err.code == 404:
@@ -45,9 +47,14 @@ def get_URLs(year):
 
 
 def fetch_games(url):
-    """Fetch first table of the website with specified table headers and turn it
-    into a Dataframe.
+    """Fetch table of a website.
 
+    Arg: url of the website as string
+
+    Functionality: Function parses through website to find a table, then stores This
+    table as a DataFrame.
+
+    Out: DataFrame
     """
     # make soup
     html = urlopen(url)
