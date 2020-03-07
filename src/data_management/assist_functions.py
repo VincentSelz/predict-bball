@@ -79,7 +79,7 @@ def clean_base_function(year):
     ]
 
     # dc = pd.read_csv(f"../data/Boxscores{year}.csv", parse_dates=True)
-    dc = pd.read_csv(ppj("IN_DATA", f"Boxscores{year}.xlsx"))
+    dc = pd.read_excel(ppj("IN_DATA", f"Boxscores{year}.xlsx"))
 
     # List of new columns names
     dc.columns = headers
