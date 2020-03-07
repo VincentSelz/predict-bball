@@ -148,5 +148,6 @@ for year in years:
 # List to Dataframe
 Seasons = pd.concat(Seasons)
 
-with open(ppj("OUT_DATA", "Seasons.xlsx"), "w") as f:
-    Seasons.to_excel(f)
+# with open(ppj("OUT_DATA", "Seasons.xlsx"), "w") as f:
+#    Seasons.to_excel(f)
+Seasons.to_excel(ppj("OUT_DATA", "Seasons.xlsx"))

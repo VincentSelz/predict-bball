@@ -1,4 +1,4 @@
-"""This script reads in data cleans/curates it and does first steps toward analyzing it."""
+"""Reads in data curates it and does first steps toward analyzing it."""
 import numpy as np
 import pandas as pd
 from pregame import dropNaNs
@@ -65,11 +65,14 @@ for key, dataset in datasets:
 # Export matrix
 result = pd.DataFrame.from_dict(results)
 result.set_index([names], inplace=True)
-with open(ppj("OUT_ANALYSIS", "datasetmatrix.xlsx"), "w") as f:
-    result.to_excel(f)
-with open(ppj("OUT_TABLES", "datasetmatrix.tex"), "w") as f:
-    result.to_latex(f)
+# with open(ppj("OUT_ANALYSIS", "datasetmatrix.xlsx"), "w") as f:
+#    result.to_excel(f)
+# with open(ppj("OUT_TABLES", "datasetmatrix.tex"), "w") as f:
+#    result.to_latex(f)
 # result.to_excel("datasetmatrix.xlsx")
+result.to_excel(ppj("OUT_TABLES", "datasetmatrix.xlsx"))
+result.to_latex(ppj("OUT_TABLES", "datasetmatrix.tex"))
+
 
 perc_diff = datasets[1]
 perc_diff = perc_diff[1]
@@ -96,8 +99,9 @@ report = pd.DataFrame(report).transpose()
 report.at["accuracy", "support"] = len(Y_validation)
 for t in "precision", "recall":
     report.at["accuracy", t] = np.nan
-with open(ppj("OUT_ANALYSIS", "ClassificationReport.xlsx"), "w") as f:
-    report.to_excel(f)
-with open(ppj("OUT_TABLES", "ClassificationReport.tex"), "w") as f:
-    report.to_latex(f)
-# report.to_excel("ClassificationReport.xlsx")
+# with open(ppj("OUT_ANALYSIS", "ClassificationReport.xlsx"), "w") as f:
+#    report.to_excel(f)
+# with open(ppj("OUT_TABLES", "ClassificationReport.tex"), "w") as f:
+#    report.to_latex(f)
+report.to_excel(ppj("OUT_TABLES", "ClassificationReport.xlsx"))
+report.to_latex(ppj("OUT_TABLES", "ClassificationReport.tex"))
