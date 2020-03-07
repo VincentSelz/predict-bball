@@ -58,7 +58,7 @@ def clean_base_function(year):
 
         Args: year
 
-        Notes: Reads in a csv-file, then drops unnecessary columns and renames the headers.
+        Notes: Reads in a excel!-file, then drops unnecessary columns and renames the headers.
         Adds two columns. Gets datetimes and names index and let dataset start at 1.
 
         Out: cleaned dataset
@@ -79,7 +79,7 @@ def clean_base_function(year):
     ]
 
     # dc = pd.read_csv(f"../data/Boxscores{year}.csv", parse_dates=True)
-    dc = pd.read_csv(ppj("IN_DATA", f"Boxscores{year}.excel"))
+    dc = pd.read_excel(ppj("IN_DATA", f"Boxscores{year}.xlsx"))
 
     # List of new columns names
     dc.columns = headers

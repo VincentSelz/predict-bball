@@ -65,10 +65,10 @@ for key, dataset in datasets:
 # Export matrix
 result = pd.DataFrame.from_dict(results)
 result.set_index([names], inplace=True)
-with open(ppj("OUT_ANALYSIS", "datasetmatrix.xlsx"), "w") as f:
-    result.to_excel(f)
-with open(ppj("OUT_TABLES", "datasetmatrix.tex"), "w") as f:
-    result.to_latex(f)
+
+result.to_excel(ppj("OUT_ANALYSIS", "datasetmatrix.xlsx"))
+
+result.to_latex(ppj("OUT_TABLES", "datasetmatrix.tex"))
 # result.to_excel("datasetmatrix.xlsx")
 
 perc_diff = datasets[1]
@@ -96,8 +96,8 @@ report = pd.DataFrame(report).transpose()
 report.at["accuracy", "support"] = len(Y_validation)
 for t in "precision", "recall":
     report.at["accuracy", t] = np.nan
-with open(ppj("OUT_ANALYSIS", "ClassificationReport.xlsx"), "w") as f:
-    report.to_excel(f)
-with open(ppj("OUT_TABLES", "ClassificationReport.tex"), "w") as f:
-    report.to_latex(f)
+
+report.to_excel(ppj("OUT_ANALYSIS", "ClassificationReport.xlsx"))
+
+report.to_latex(ppj("OUT_TABLES", "ClassificationReport.tex"))
 # report.to_excel("ClassificationReport.xlsx")
