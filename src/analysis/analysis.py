@@ -22,7 +22,6 @@ from bld.project_paths import project_paths_join as ppj
 
 # Read in Data
 dataset = pd.read_excel(ppj("IN_DATA", "Seasons.xlsx"))
-# dataset = pd.read_excel("../data/Seasons.xlsx")
 
 # Last cleaning parts and slicing into four darasets
 clean_data = dropNaNs(dataset)
@@ -89,7 +88,6 @@ predictions = model.predict(X_validation)
 # Get predictions
 score = accuracy_score(Y_validation, predictions)
 confusion = confusion_matrix(Y_validation, predictions)
-confusion = pd.Dataframe(confusion)
 report = classification_report(Y_validation, predictions, output_dict=True)
 report = pd.DataFrame(report).transpose()
 report.at["accuracy", "support"] = len(Y_validation)
