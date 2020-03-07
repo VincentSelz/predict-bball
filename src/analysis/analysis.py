@@ -98,7 +98,7 @@ for t in "precision", "recall":
 
 # Export as Excel file and as tex file
 score.to_latex(ppj("OUT_TABLES", "score.tex"))
-report.to_excel(ppj("OUT_ANALYSIS", "confusion.xlsx"))
-report.to_latex(ppj("OUT_TABLES", "confusion.tex"))
+confusion.to_excel(ppj("OUT_ANALYSIS", "confusion.xlsx"))
+confusion.to_latex(ppj("OUT_TABLES", "confusion.tex"))
 report.to_excel(ppj("OUT_ANALYSIS", "ClassificationReport.xlsx"))
 report.to_latex(ppj("OUT_TABLES", "ClassificationReport.tex"))
