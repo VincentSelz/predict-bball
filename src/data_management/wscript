@@ -1,12 +1,20 @@
 #! python
 
-
 def build(ctx):
-
-    # Illustrate simple use of run_py_script
     ctx(
         features="run_py_script",
-        source="get_simulation_draws.py",
-        target=ctx.path_to(ctx, "OUT_DATA", "initial_locations.csv"),
-        name="get_simulation_draws",
+        source="data_management.py",
+        deps = [ctx.path_to(ctx, "IN_DATA", "Boxscores2010.xlsx"),
+            ctx.path_to(ctx, "IN_DATA", "Boxscores2011.xlsx"),
+            ctx.path_to(ctx, "IN_DATA", "Boxscores2012.xlsx"),
+            ctx.path_to(ctx, "IN_DATA", "Boxscores2013.xlsx"),
+            ctx.path_to(ctx, "IN_DATA", "Boxscores2014.xlsx"),
+            ctx.path_to(ctx, "IN_DATA", "Boxscores2015.xlsx"),
+            ctx.path_to(ctx, "IN_DATA", "Boxscores2016.xlsx"),
+            ctx.path_to(ctx, "IN_DATA", "Boxscores2017.xlsx"),
+            ctx.path_to(ctx, "IN_DATA", "Boxscores2018.xlsx"),
+            ctx.path_to(ctx, "IN_DATA", "Boxscores2019.xlsx"),
+        ],
+        target = ctx.path_to(ctx, "OUT_DATA", "Seasons.xlsx"),
+        name="use_data",
     )
