@@ -13,11 +13,12 @@ years = list(range(2010, 2020))
 
 
 def schedule_scraper(years):
-    """
-    This function takes a list of years as argument and scrapes the site for these years and
-    returns the NBA schedules as Excel-document.
+    """Scrapes schedule and spits them out as Excel files.""
 
-    Args: list of years
+    Arg: list of years
+
+    Functionality: This function parses through each specified year and stores the data
+    in a Dictionary with years as keys. Next, these Dataframe are exported as an Excel file.
 
     """
     box_scores = {}
@@ -34,10 +35,8 @@ def schedule_scraper(years):
             time.sleep(3)
         # Create a Dataframe for each year
         box_scores[year] = pd.concat(box_scores[year])
-        # Export it as Excel file with Waf
-        # box_scores[year].to_excel(ppj("OUT_DATA","Boxscores" + str(year) + ".xlsx"),sep="/")
-        # Export it without waf
-        box_scores[year].to_csv("../data/Boxscores" + str(year) + ".csv")
+        # Export it as Excel file
+        box_scores[year].to_excel("../data/Boxscores" + str(year) + ".xlsx")
     return print("Exported all Boxscores successfully!")
 
 
