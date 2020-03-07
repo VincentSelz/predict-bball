@@ -11,7 +11,6 @@ def build(ctx):
                 ctx.path_to(ctx, "OUT_ANALYSIS", "ClassificationReport.xlsx"),
                 ctx.path_to(ctx, "OUT_TABLES", "datasetmatrix.tex"),
                 ctx.path_to(ctx, "OUT_TABLES", "ClassificationReport.tex"),
-                ctx.path_to(ctx, "OUT_TABLES", "score.tex"),
                 ctx.path_to(ctx, "OUT_ANALYSIS", "confusion.xlsx"),
                 ctx.path_to(ctx, "OUT_TABLES", "confusion.tex"),
             ],

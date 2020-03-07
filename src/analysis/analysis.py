@@ -84,9 +84,13 @@ model = LogisticRegression(solver="liblinear", multi_class="ovr")
 model.fit(X_train, Y_train)
 predictions = model.predict(X_validation)
 
+# Print predictions for a first impression
+print(accuracy_score(Y_validation, predictions))
+print(confusion_matrix(Y_validation, predictions))
+print(classification_report(Y_validation, predictions, output_dict=True))
+
 
 # Get predictions
-score = accuracy_score(Y_validation, predictions)
 confusion = confusion_matrix(Y_validation, predictions)
 report = classification_report(Y_validation, predictions, output_dict=True)
 report = pd.DataFrame(report).transpose()
@@ -95,7 +99,6 @@ for t in "precision", "recall":
     report.at["accuracy", t] = np.nan
 
 # Export as Excel file and as tex file
-score.to_latex(ppj("OUT_TABLES", "score.tex"))
 confusion.to_excel(ppj("OUT_ANALYSIS", "confusion.xlsx"))
 confusion.to_latex(ppj("OUT_TABLES", "confusion.tex"))
 report.to_excel(ppj("OUT_ANALYSIS", "ClassificationReport.xlsx"))
