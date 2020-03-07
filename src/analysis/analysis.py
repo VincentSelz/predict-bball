@@ -91,7 +91,6 @@ print(classification_report(Y_validation, predictions, output_dict=True))
 
 
 # Get predictions
-confusion = confusion_matrix(Y_validation, predictions)
 report = classification_report(Y_validation, predictions, output_dict=True)
 report = pd.DataFrame(report).transpose()
 report.at["accuracy", "support"] = len(Y_validation)
@@ -99,7 +98,5 @@ for t in "precision", "recall":
     report.at["accuracy", t] = np.nan
 
 # Export as Excel file and as tex file
-confusion.to_excel(ppj("OUT_ANALYSIS", "confusion.xlsx"))
-confusion.to_latex(ppj("OUT_TABLES", "confusion.tex"))
 report.to_excel(ppj("OUT_ANALYSIS", "ClassificationReport.xlsx"))
 report.to_latex(ppj("OUT_TABLES", "ClassificationReport.tex"))
