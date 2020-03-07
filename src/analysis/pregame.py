@@ -13,7 +13,7 @@ def dropNaNs(df):
     if nans.gameid.all() < 30:
         clean_data = df.dropna()
     else:
-        raise ValueError("Values are missing, where they should not")
+        raise ValueError("Values are missing, where they should not.")
     return clean_data
 
 
@@ -56,21 +56,17 @@ def order_dataset(df):
 def get_datasets(df):
     datasets = []
     totals = df.drop(df.columns[[1, 2, 7, 8, 9, 10, 11, 12, 13, 14]], axis=1)
-    datasets.append(("Totals", totals))
+    datasets.append(("totals", totals))
     perc_diff = df.drop(df.columns[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]], axis=1)
-    datasets.append(("Win Percentage + Point Differential", perc_diff))
+    datasets.append(("win% + ppg diff", perc_diff))
     perc_average = df.drop(df.columns[[1, 2, 3, 4, 5, 6, 13, 14]], axis=1)
-    datasets.append(("Win Percentage + Per Game Averages", perc_average))
+    datasets.append(("win% + ppg", perc_average))
     perc_average_woDaysOff = df.drop(
         df.columns[[1, 2, 3, 4, 5, 6, 13, 14, 15, 16]], axis=1
     )
-    datasets.append(
-        ("Win Percentage + Per Game Averages without Days Off", perc_average_woDaysOff)
-    )
+    datasets.append(("win% + ppg wo days", perc_average_woDaysOff))
     perc_diff_woDaysOff = df.drop(
         df.columns[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 16]], axis=1
     )
-    datasets.append(
-        ("Win Percentage + Point Differential without Days Off", perc_diff_woDaysOff)
-    )
+    datasets.append(("win% + ppg diff wo days", perc_diff_woDaysOff))
     return datasets

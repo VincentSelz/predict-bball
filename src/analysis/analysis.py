@@ -1,5 +1,4 @@
 """Reads in data curates it and does first steps toward analyzing it."""
-import numpy as np
 import pandas as pd
 from pregame import dropNaNs
 from pregame import get_datasets
@@ -94,8 +93,9 @@ print(classification_report(Y_validation, predictions, output_dict=True))
 report = classification_report(Y_validation, predictions, output_dict=True)
 report = pd.DataFrame(report).transpose()
 report.at["accuracy", "support"] = len(Y_validation)
+report.support = report.support.astype(int)
 for t in "precision", "recall":
-    report.at["accuracy", t] = np.nan
+    report.at["accuracy", t] = ""
 
 # Export as Excel file and as tex file
 report.to_excel(ppj("OUT_ANALYSIS", "ClassificationReport.xlsx"))
