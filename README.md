@@ -8,12 +8,11 @@ to predict games withheld from testing.
 
 ## Getting Started
 
-The further instructions will guide along to how the project can be set up and run and how
-to run tests
+The further instructions will guide you along to how the project can be set up and run.
 
 ### Dependencies
 
-The project runs in a conda environment. The various dependencies can be checked in the
+The project runs in an conda environment. The various dependencies can be checked in the
 environment.yml file.
 To get the environment up and running:
 
@@ -25,12 +24,11 @@ conda activate predict_bball
 
 ### Running tests
 
-Tests are constructed on various stages to ensure consistency within the project. Mainly,
-they are run on three stages:
+To ensure consistency within the project, tests are constructed on, mainly, three stages:
 
 * Checking whether the webscraper does what he should.
 
-* Review the scraped data.
+* Checking the scraped data.
 
 * Verify that the data management runs smoothly.
 
@@ -51,10 +49,6 @@ The scraper adheres to the TOS of basketball-reference.com and makes "no more re
 
 ## Acknowledgments
 
-* To many unsung heroes in the web, whose code was used
-
-* To Sci-Kit, making Machine Learning manageable
-
-* To BeautifulSoup, making Webscraping doable
+* Many unsung heroes in the web, whose code was used
 
 * To xyz for their inspiration using similar techniques to predict basketball games
