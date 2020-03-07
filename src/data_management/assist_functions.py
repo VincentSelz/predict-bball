@@ -1,6 +1,8 @@
 """Assists by managing the Data."""
 import pandas as pd
 
+from bld.project_paths import project_paths_join as ppj
+
 
 def abbrev_teams(dataset):
     """Replacing a list of teams with their abbrevations.
@@ -61,7 +63,7 @@ def clean_base_function(year):
 
         Out: cleaned dataset
         """
-    # List of column names(A, B, C are used to easier indentifiy unnecessary columns)
+    # List of column names(A, B, C are used to easier indentify unnecessary columns)
     headers = [
         "A",
         "Date",
@@ -76,7 +78,8 @@ def clean_base_function(year):
         "F",
     ]
 
-    dc = pd.read_csv(f"../data/Boxscores{year}.csv", parse_dates=True)
+    # dc = pd.read_csv(f"../data/Boxscores{year}.csv", parse_dates=True)
+    dc = pd.read_csv(ppj("IN_DATA", f"Boxscores{year}.excel"))
 
     # List of new columns names
     dc.columns = headers

@@ -1,15 +1,12 @@
-"""This file reads in all the scraped Excel file and than manipulates them in
+"""This file reads in all the scraped Excel file and then manipulates them in
 a way to attain one Dataframe with all games.
 """
 import pandas as pd
 from assist_functions import clean_base_function
 
-# from bld.project_paths import project_paths_join as ppj
+from bld.project_paths import project_paths_join as ppj
 
 years = list(range(2010, 2020))
-
-# def save_data(sample):
-#    sample.to_csv(ppj("OUT_DATA", f"{sample}.csv"), sep=",")
 
 Seasons = []
 for year in years:
@@ -150,4 +147,6 @@ for year in years:
 
 # List to Dataframe
 Seasons = pd.concat(Seasons)
-# save_data(Seasons)
+
+with open(ppj("OUT_DATA", "Seasons.xlsx"), "w") as f:
+    Seasons.to_excel(f)
