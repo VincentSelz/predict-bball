@@ -42,6 +42,7 @@ models.append(
 )
 
 results = {}
+np.random.seed(24)
 for key, dataset in datasets:
     array = dataset.values
     X = array[:, 1:]
@@ -70,9 +71,9 @@ result.to_excel(ppj("OUT_ANALYSIS", "datasetmatrix.xlsx"))
 result.to_latex(ppj("OUT_TABLES", "datasetmatrix.tex"))
 
 # Get best performing dataset
-perc_diff = datasets[1]
-perc_diff = perc_diff[1]
-array = perc_diff.values
+perc_ppg = datasets[2]
+perc_ppg = perc_ppg[1]
+array = perc_ppg.values
 X = array[:, 1:]
 y = array[:, 0]
 y = y.astype("int")

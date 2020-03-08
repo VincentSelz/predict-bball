@@ -54,6 +54,14 @@ def order_dataset(df):
 
 
 def get_datasets(df):
+    """Curates the datasets for analysis.
+
+    Arg: Dataset with all possible Regressors
+
+    Functionality: Drops all the unncessary columns and then appends them to a dataset.
+
+    Out: List of five different datasets with different combinations of variables.
+    """
     datasets = []
     totals = df.drop(df.columns[[1, 2, 7, 8, 9, 10, 11, 12, 13, 14]], axis=1)
     datasets.append(("totals", totals))
