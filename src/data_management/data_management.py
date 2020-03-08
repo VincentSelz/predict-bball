@@ -26,21 +26,21 @@ for year in years:
         Away[team] = dc[dc["Away Team"].str.match(f"{team}")]
 
         # Get Wins
-        Home[team].loc[:, f"{team} Win"] = Home[team]["Home Win"]
-        Away[team].loc[:, f"{team} Win"] = Away[team]["Home Win"].apply(
+        Home[team][f"{team} Win"] = Home[team]["Home Win"]
+        Away[team][f"{team} Win"] = Away[team]["Home Win"].apply(
             lambda x: 1 if x == 0 else 0
         )
-        Home[team].loc[:, f"{team} Loss"] = Home[team]["Home Win"].apply(
+        Home[team][f"{team} Loss"] = Home[team]["Home Win"].apply(
             lambda x: 1 if x == 0 else 0
         )
-        Away[team].loc[:, f"{team} Loss"] = Away[team]["Home Win"].apply(
+        Away[team][f"{team} Loss"] = Away[team]["Home Win"].apply(
             lambda x: 1 if x == 1 else 0
         )
         # Get points
-        Home[team].loc[:, f"{team} PTS"] = Home[team]["PTS Home"]
-        Away[team].loc[:, f"{team} PTS"] = Away[team]["PTS Away"]
-        Home[team].loc[:, f"OPP PTS"] = Home[team]["PTS Away"]
-        Away[team].loc[:, f"OPP PTS"] = Away[team]["PTS Home"]
+        Home[team][f"{team} PTS"] = Home[team]["PTS Home"]
+        Away[team][f"{team} PTS"] = Away[team]["PTS Away"]
+        Home[team][f"OPP PTS"] = Home[team]["PTS Away"]
+        Away[team][f"OPP PTS"] = Away[team]["PTS Home"]
 
         # Concat the Dataframes
         Season[team] = pd.concat([Home[team], Away[team]])
