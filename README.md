@@ -21,27 +21,31 @@ Conda env create -f environment.yml
 
 conda activate predict_bball
 ```
+It was run on the following machine:
+
+```
+Macbook Pro
+Version:
+Processor:
+```
 
 ### Running tests
 
-To ensure consistency within the project, tests are constructed on, mainly, three stages:
+To ensure consistency within the project, tests are constructed on numerous stages.They can be called with:
 
-* Checking whether the webscraper does what he should.
-
-* Checking the scraped data.
-
-* Verify that the data management runs smoothly.
+```
+pytest
+```
 
 ## Deployment
 
-The project runs with waf (hopefully till then), yet before applying the waf machinery the webscraping
+The project runs with waf, yet before applying the waf machinery the webscraping
 has to be done. The files that will be downloaded during the process are already in the intended folder but feel free
 to test out the scraper. Then, waf can be run to spit out the analysis. The scraper can be run as follows:
 
 ```
-python3 src/webscraper/schedule_scraper.py
+python src/webscraper/schedule_scraper.py
 ```
-Does this work?
 
 ### Robots.txt
 
