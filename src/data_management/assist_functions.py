@@ -11,6 +11,8 @@ def abbrev_teams(dataset):
 
     Note: NBA teams change names semi-regularly - the function only accounts for the teams
     that changed names in the last 10 years.
+
+    Out: Dataset with abbrevations
     """
     dataset.replace(
         {
@@ -58,12 +60,12 @@ def clean_base_function(year):
 
         Args: year
 
-        Notes: Reads in a csv-file, then drops unnecessary columns and renames the headers.
-        Adds two columns. Gets datetimes and names index and let dataset start at 1.
+        Notes: Reads in a excel file, then drops unnecessary columns and renames the headers.
+        Adds two columns. Gets datetimes and names index and let index start at 1.
 
         Out: cleaned dataset
         """
-    # List of column names(A, B, C are used to easier indentify unnecessary columns)
+    # List of column names(A, B, C are used to easier identify unnecessary columns)
     headers = [
         "A",
         "Date",
@@ -78,13 +80,13 @@ def clean_base_function(year):
         "F",
     ]
 
-    # dc = pd.read_csv(f"../data/Boxscores{year}.csv", parse_dates=True)
-    dc = pd.read_excel(ppj("IN_DATA", f"Boxscores{year}.xlsx"))
+    try:
+        dc = pd.read_excel(ppj("IN_DATA", f"Boxscores{year}.xlsx"))
+    except Exception:
+        raise ValueError("The dataset for the specified year cannot be found.")
 
-    # List of new columns names
+    # List of new columns names/ drop unncessary columns
     dc.columns = headers
-
-    # Drop Columns
     dc.drop(["A", "B", "C", "D", "E", "F"], axis=1, inplace=True)
 
     # Identifies Playoffs start and drops rows after that
@@ -97,7 +99,7 @@ def clean_base_function(year):
     # Change team names to abbrevations
     abbrev_teams(dc)
 
-    # Calculate Win Difference + Indicator
+    # Calculate Win Difference + Win Indicator
     dc["Win Difference"] = dc["PTS Home"].subtract(dc["PTS Away"])
     dc["Home Win"] = dc["Win Difference"].apply(lambda x: 1 if x >= 0 else 0)
 

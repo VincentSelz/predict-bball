@@ -25,22 +25,22 @@ for year in years:
         Home[team] = dc[dc["Home Team"].str.match(f"{team}")]
         Away[team] = dc[dc["Away Team"].str.match(f"{team}")]
 
-        # Get Wins #Copy Warning
-        Home[team][f"{team} Win"] = Home[team]["Home Win"]
-        Away[team][f"{team} Win"] = Away[team]["Home Win"].apply(
+        # Get Wins
+        Home[team].loc[:, f"{team} Win"] = Home[team]["Home Win"]
+        Away[team].loc[:, f"{team} Win"] = Away[team]["Home Win"].apply(
             lambda x: 1 if x == 0 else 0
         )
-        Home[team][f"{team} Loss"] = Home[team]["Home Win"].apply(
+        Home[team].loc[:, f"{team} Loss"] = Home[team]["Home Win"].apply(
             lambda x: 1 if x == 0 else 0
         )
-        Away[team][f"{team} Loss"] = Away[team]["Home Win"].apply(
+        Away[team].loc[:, f"{team} Loss"] = Away[team]["Home Win"].apply(
             lambda x: 1 if x == 1 else 0
         )
-        # Get points #Copy Warning
-        Home[team][f"{team} PTS"] = Home[team]["PTS Home"]
-        Away[team][f"{team} PTS"] = Away[team]["PTS Away"]
-        Home[team][f"OPP PTS"] = Home[team]["PTS Away"]
-        Away[team][f"OPP PTS"] = Away[team]["PTS Home"]
+        # Get points
+        Home[team].loc[:, f"{team} PTS"] = Home[team]["PTS Home"]
+        Away[team].loc[:, f"{team} PTS"] = Away[team]["PTS Away"]
+        Home[team].loc[:, f"OPP PTS"] = Home[team]["PTS Away"]
+        Away[team].loc[:, f"OPP PTS"] = Away[team]["PTS Home"]
 
         # Concat the Dataframes
         Season[team] = pd.concat([Home[team], Away[team]])
@@ -138,16 +138,13 @@ for year in years:
     Season_data = Home_All.join(Away_All)
     Season_data.sort_index(inplace=True)
 
-    # Export data per year as csv file
-    # Season_data.to_csv(ppj("DATA_MANAGEMENT", f"Season{year}_data.csv"), sep=",")
-    # Season_data.to_csv(f"../data/Season{year}_data.csv"), sep=",")
+    # Export data per year as excel file
+    # Season_data.to_excel(ppj("OUT_DATA", f"Season{year}_data.excel"))
 
     # Get list of all season together
     Seasons.append(Season_data)
 
 # List to Dataframe
 Seasons = pd.concat(Seasons)
-
-# with open(ppj("OUT_DATA", "Seasons.xlsx"), "w") as f:
-#    Seasons.to_excel(f)
+# Export Dataframe
 Seasons.to_excel(ppj("OUT_DATA", "Seasons.xlsx"))
