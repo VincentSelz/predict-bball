@@ -5,7 +5,7 @@ def build(ctx):
         ctx(
             features="run_py_script",
             source="analysis.py",
-            deps= ctx.path_to(ctx, "IN_DATA", "Seasons.xlsx"),
+            deps= ctx.path_to(ctx, "OUT_DATA", "Seasons.xlsx"),
             target=[
                 ctx.path_to(ctx, "OUT_ANALYSIS", "datasetmatrix.xlsx"),
                 ctx.path_to(ctx, "OUT_ANALYSIS", "ClassificationReport.xlsx"),

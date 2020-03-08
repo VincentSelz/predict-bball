@@ -21,7 +21,7 @@ from sklearn.tree import DecisionTreeClassifier
 from bld.project_paths import project_paths_join as ppj
 
 # Read in Data
-dataset = pd.read_excel(ppj("IN_DATA", "Seasons.xlsx"))
+dataset = pd.read_excel(ppj("OUT_DATA", "Seasons.xlsx"))
 
 # Last cleaning parts and slicing into four darasets
 clean_data = dropNaNs(dataset)
