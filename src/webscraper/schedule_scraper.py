@@ -18,9 +18,16 @@ def schedule_scraper(years):
     Arg: list of years
 
     Functionality: This function parses through each specified year and stores the data
-    in a Dictionary with years as keys. Next, these Dataframe are exported as an Excel file.
+    in a Dictionary with years as keys. Next, these Dataframe are exported as Excel files.
 
+    Out: Boxscores per year as Excel file.
     """
+
+    VALID_YEARS = set(range(1950, 2020))
+    years = set(years)
+    if years.issubset(VALID_YEARS) is False:
+        raise ValueError("Atleast some years are not in the valid range.")
+
     box_scores = {}
     for year in years:
         urls = get_URLs(year)
@@ -36,7 +43,7 @@ def schedule_scraper(years):
         # Create a Dataframe for each year
         box_scores[year] = pd.concat(box_scores[year])
         # Export it as Excel file
-        box_scores[year].to_excel("../data/Boxscores" + str(year) + ".xlsx")
+        box_scores[year].to_excel("./src/original_data/Boxscores" + str(year) + ".xlsx")
     return print("Exported all Boxscores successfully!")
 
 

@@ -16,7 +16,12 @@ def get_URLs(year):
 
     Notes: Month include all months were the NBA is playing but there are instances,
     were the season begins later, thus the necessity to check the URLs.
+
+    Out: List of URLs.
     """
+    if type(year) != int:
+        raise ValueError("Input is not an integer.")
+
     months = [
         "october",
         "november",
@@ -41,8 +46,15 @@ def get_URLs(year):
         except HTTPError as err:
             if err.code == 404:
                 continue
-            else:
-                raise HTTPError("Request was not successful.")
+            # else:
+            #    raise HTTPError("Request was not successful. Status Error is:" + str(err.code))
+
+        if len(set(urls)) != len(urls):
+            raise AssertionError("URLs are not unique!")
+
+        if len(urls) <= 0:
+            raise AssertionError("No URLs were collected")
+
     return urls
 
 
