@@ -31,11 +31,12 @@ Processor:
 
 ### Running tests
 
-To ensure consistency within the project, tests are constructed on numerous stages.They can be called with:
+To ensure consistency within the project, some tests are constructed.They can be called with:
 
 ```
 pytest
 ```
+Note that these test focus on the scraper. Time permitting, I'll expand the test coverage towards the other parts of my project.
 
 ## Deployment
 
@@ -53,6 +54,4 @@ The scraper adheres to the TOS of basketball-reference.com and makes "no more re
 
 ## Acknowledgments
 
-* Many unsung heroes in the web, whose code was used
 
-* To xyz for their inspiration using similar techniques to predict basketball games
