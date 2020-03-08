@@ -1,4 +1,5 @@
 """Reads in data curates it and does first steps toward analyzing it."""
+import numpy as np
 import pandas as pd
 from pregame import dropNaNs
 from pregame import get_datasets
@@ -62,12 +63,13 @@ for key, dataset in datasets:
 # Export matrix
 result = pd.DataFrame.from_dict(results)
 result.set_index([names], inplace=True)
+result = result.round(4)
 
 # Export as Excel file and as tex file
 result.to_excel(ppj("OUT_ANALYSIS", "datasetmatrix.xlsx"))
 result.to_latex(ppj("OUT_TABLES", "datasetmatrix.tex"))
 
-
+# Get best performing dataset
 perc_diff = datasets[1]
 perc_diff = perc_diff[1]
 array = perc_diff.values
@@ -86,16 +88,18 @@ predictions = model.predict(X_validation)
 # Print predictions for a first impression
 print(accuracy_score(Y_validation, predictions))
 print(confusion_matrix(Y_validation, predictions))
-print(classification_report(Y_validation, predictions, output_dict=True))
+print(classification_report(Y_validation, predictions))
 
 
 # Get predictions
 report = classification_report(Y_validation, predictions, output_dict=True)
 report = pd.DataFrame(report).transpose()
+report = report.round(2)
 report.at["accuracy", "support"] = len(Y_validation)
 report.support = report.support.astype(int)
 for t in "precision", "recall":
-    report.at["accuracy", t] = ""
+    report.at["accuracy", t] = np.nan
+
 
 # Export as Excel file and as tex file
 report.to_excel(ppj("OUT_ANALYSIS", "ClassificationReport.xlsx"))
