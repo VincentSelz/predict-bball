@@ -17,26 +17,21 @@ environment.yml file.
 To get the environment up and running:
 
 ```
-Conda env create -f environment.yml
+conda env create -f environment.yml
 
 conda activate predict_bball
 ```
-It was run on the following machine:
+It was run on a MacOS Sierra Version 10.13
 
-```
-Macbook Pro
-Version:
-Processor:
-```
 
 ### Running tests
 
-To ensure consistency within the project, some tests are constructed.They can be called with:
+To ensure consistency within the project, some tests are constructed. They can be called with:
 
 ```
 pytest
 ```
-Note that these test focus on the scraper. Time permitting, I'll expand the test coverage towards the other parts of my project.
+Note that these tests focus on the scraper. Time permitting, I'll expand the test coverage towards the other parts of my project.
 
 ## Deployment
 
@@ -51,7 +46,3 @@ python src/webscraper/schedule_scraper.py
 ### Robots.txt
 
 The scraper adheres to the TOS of basketball-reference.com and makes "no more requests than a typical human could", also a crawl-delay of three seconds as specified in the robots.txt is followed.
-
-## Acknowledgments
-
-
